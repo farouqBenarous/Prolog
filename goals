@@ -1,0 +1,19 @@
+1. insert bibtex entry depending on the type of document (inproceedings,
+article or book) knowing that each type of document have a different
+set of information fields represented in the examples above,
+
+2. search for references by year or author or title knowing that in authors
+field there is a list of authors;
+
+3. allow some advanced searches that return the ”AND” result between
+two fields Author and Year;
+
+4. given a key, print on the screen the associated bibliographic reference
+in text format;
+
+5. given a set of keys produce a file with all corresponding bibliographic
+references in bibtex format and a txt file with all those references in
+text format;
+
+6. generate the dot file representing semantic relations (based on common
+keywords in annote field) between references.
