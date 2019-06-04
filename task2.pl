@@ -1,6 +1,6 @@
-:- dynamic article/4.
-:- dynamic inproceedings/4.
-:- dynamic book/4.
+:- dynamic article/6.
+:- dynamic inproceedings/6.
+:- dynamic book/6.
 
 
 article(title("title1") , author("author1") , journal("journal1") , volume("volume1") , number(1) , pages("44-55") , month("August") , year("1995") , annote("Software Maintenance")).
@@ -8,20 +8,21 @@ article(title("title2") , author("author2") , journal("journal2") , volume("volu
 article(title("title3") , author("author3") , journal("journal3") , volume("volume3") , number(3) , pages("44-55") , month("August") , year("1995") , annote("Software Maintenance")).
 article(title("title4") , author("author4") , journal("journal4") , volume("volume4") , number(4) , pages("44-55") , month("August") , year("1995") , annote("Software Maintenance")).
 
-inproceedings (title("title1") , author("author1") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
-inproceedings (title("title2") , author("author2") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
-inproceedings (title("title3") , author("author3") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
-inproceedings (title("title4") , author("author4") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
+inproceedings(title("title1") , author("author1") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
+inproceedings(title("title2") , author("author2") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
+inproceedings(title("title3") , author("author3") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
+inproceedings(title("title4") , author("author4") , booktitle("International") , address("adress") , month("june") , year("1995") , annote("Code Analysis") ) .
 
-book (title("title1") , author("author1") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
-book (title("title2") , author("author2") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
-book (title("title3") , author("author3") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
-book (title("title4") , author("author4") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
-
-
+book(title("title1") , author("author1") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
+book(title("title2") , author("author2") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
+book(title("title3") , author("author3") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
+book(title("title4") , author("author4") , series("Texts and Monographs in C") , year(1995) , publisher("sv") , annote("Compilers") ) .
 
 
 
+
+			  
+start :-menu .
 menu :-
 	write(' ---------------------------------------------------- \n'),
     nl,
@@ -100,7 +101,7 @@ init:-assert(biblio(art([]),proc([]),book([]))).
 	read(I), !,
 	assert(biblio(art(title(A),author(B),journal(C),volume(D),number(E),pages(F),month(G),year(H),annote(I)))) ,
 	assert(article(title(A) , author(B) , journal(C) , volume(D) , number(E) , pages(F) , month(G) , year(H) , annote(I)) ).
- Insert an article   -----------------------------------------------------
+% Insert an article   -----------------------------------------------------
 
 % Insert an inproceedig   ------------------------------------------------------------  
     insert_proc :-
@@ -119,7 +120,7 @@ init:-assert(biblio(art([]),proc([]),book([]))).
 	write('annote:'),
 	read(G), !,
 	assert(biblio(proc(title(A),author(B),booktitle(C),address(D),month(E),year(F),annote(G)))) ,
-	inproceedings (title(A) , author(B) , booktitle(C) , address(D) , month(E) , year(F) , annote(G) ) .
+	inproceedings(title(A) , author(B) , booktitle(C) , address(D) , month(E) , year(F) , annote(G) ) .
 % Insert an inproceedig   ------------------------------------------------------------  
 
 % Insert an inproceedig   -------------------------------------------------------------
@@ -137,49 +138,50 @@ init:-assert(biblio(art([]),proc([]),book([]))).
 	write('annote:'),
 	read(F), !,
 	assert(biblio(book(title(A),author(B),series(C),year(D),publisher(E),annote(F)))) , 
-	book (title(A) , author(B) , series(C) , year(D) , publisher(E) , annote(F) ) .
+	book(title(A) , author(B) , series(C) , year(D) , publisher(E) , annote(F) ) .
 % Insert an inproceedig   -------------------------------------------------------------
 
 
 %Search by Year ---------------------------------------------------------
- searchbyyear (D):- (D==1, write('Set the year  '), read(Y), searcharticlebyyear (Y) ,nl, menu;
-	   D==2,write('Set the year  '), read(Y), searchinproceedingsbyyear(Y),nl, menu;   
-	   D==3,write('Set the year  '), read(Y),searchbookbyyear(Y), nl, menu; ).
+ searchbyyear(D):- (D==1, write('Set the year  '), read(Y), searcharticlebyyear(Y);
+	   D==2,write('Set the year  '), read(Y), searchinproceedingsbyyear(Y); 
+	   D==3,write('Set the year  '), read(Y),searchbookbyyear(Y)).
 
- searcharticlebyyear (Y):- findall(P,article(_,_,_,_,_,_,_, year(Y) ,_), S) ,,write(S) .
- searchinproceedingsbyyear (Y):-findall(P,inproceedings(_,_,_,_,_, year(Y) ,_), S) , ,write(S).
- searchbookbyyear (Y):- findall(P,book(_,_,_, year(Y) ,_,_), S) , write(S).
+ searcharticlebyyear(Y):- findall(P,article(_,_,_,_,_,_,_,year(Y),_), S),write(S) .
+ searchinproceedingsbyyear(Y):-findall(P,inproceedings(_,_,_,_,_, year(Y) ,_), S) ,write(S).
+ searchbookbyyear(Y):- findall(P,book(_,_,_, year(Y) ,_,_), S) , write(S).
 %Search by Year ---------------------------------------------------------
 
 %Search by author ---------------------------------------------------------
 
- searchbyauthor (D):- (D==1, write('Set the Author name  '), read(N), searcharticlebyauthor (N) ,nl, menu;
-	   D==2,write('Set the author name   '), read(N), searchinproceedingsbyauthor(N),nl, menu;   
-	   D==3,write('Set the author name   '), read(N),searchbookbyyearbyauthor(N), nl, menu; ).
+ searchbyauthor(D):- (D==1, write('Set the Author name  '), read(N), searcharticlebyauthor(N),
+	   D==2,write('Set the author name   '), read(N), searchinproceedingsbyauthor(N),   
+	   D==3,write('Set the author name   '), read(N),searchbookbyyearbyauthor(N)).
 
 
- searcharticlebyauthor (N):- findall(P,article(_,author(N),_,_,_,_,_,_,_), S) ,,write(S) .
- searchinproceedingsbyauthor (N):-findall(P,inproceedings(_,author(N),_,_,_,_,_), S) , ,write(S).
- searchbookbyyearbyauthor (N):- findall(P,book(_,author(N),_,_,_,_), S) , write(S).
+ searcharticlebyauthor(N):- findall(P,article(_,author(N),_,_,_,_,_,_,_), S) ,write(S) .
+ searchinproceedingsbyauthor(N):-findall(P,inproceedings(_,author(N),_,_,_,_,_), S) ,write(S).
+ searchbookbyyearbyauthor(N):- findall(P,book(_,author(N),_,_,_,_), S) , write(S).
 %Search by author ---------------------------------------------------------
 
 
 %Search by Title ---------------------------------------------------------
-searchbytitle(D):- (D==1, write('Set the Title  '), read(T), searcharticlebytitle (T) ,nl, menu;
-	   D==2,write('Set the title   '), read(T), searchinproceedingsbytitle(T),nl, menu;   
-	   D==3,write('Set the title   '), read(T),searchbookbyyearbytitle(T), nl, menu; ).
+searchbytitle(D):- (D==1, write('Set the Title  '), read(T), searcharticlebytitle(T);
+	   D==2,write('Set the title   '), read(T), searchinproceedingsbytitle(T);   
+	   D==3,write('Set the title   '), read(T),searchbookbyyearbytitle(T) ).
 
 
- searcharticlebytitle(T):- findall(P,article(title(T),_,_,_,_,_,_,_,_), S) ,,write(S) .
- searchinproceedingsbytitle(T):- findall(P,inproceedings(title(T),_,_,_,_,_,_), S) , ,write(S).
+ searcharticlebytitle(T):- findall(P,article(title(T),_,_,_,_,_,_,_,_), S) ,write(S) .
+ searchinproceedingsbytitle(T):- findall(P,inproceedings(title(T),_,_,_,_,_,_), S) , write(S).
  searchbookbyyearbytitle(T):- findall(P,book(title(T),_,_,_,_,_), S) , write(S).
 
 %Search by Title ---------------------------------------------------------
 
 %Search by author an Title ---------------------------------------------------------
-searchbyAuthTitle(D)  :- (D==1, write('Set the Title'), read(T),  write('Set the Author'), read(A) , searcharticlebyauthtile (A,T) ,nl, menu;
-	   D==2,write('Set the title'), read(T), write('Set the Author'), read(A), searchinproceedingsbyauthtile(A,T),nl, menu;   
-	   D==3,write('Set the title'), read(T), write('Set the Author'), read(A) ,searchbookbyyearbyauthtile(A,T), nl, menu; ).
+searchbyAuthTitle(D)  :- (D==1, write('Set the Title'), read(T3),  write('Set the Author'), read(A3) , searcharticlebyauthtile(A3,T3);
+	   D==2,write('Set the title'), read(T2), write('Set the Author'), read(A2), searchinproceedingsbyauthtile(A2,T2);   
+	   D==3,write('Set the title'), read(T1), write('Set the Author'), read(A1) ,
+	   searchbookbyyearbyauthtile(A1,T1)).
 
  searcharticlebyauthtile(A,T):- findall(P,article(title(T),author(A),_,_,_,_,_,_,_), S),write(S) .
  searchinproceedingsbyauthtile(A,T):- findall(P,inproceedings(title(T),author(A),_,_,_,_,_), S) ,write(S).
@@ -194,14 +196,14 @@ searchbyAuthTitle(D)  :- (D==1, write('Set the Title'), read(T),  write('Set the
 %Make graph ---------------------------------------------------------
 
 
-dot_graph(D):-(D==1,write('Enter the keyword '),read(C)nl,write('digraph G {'),nl,write('rankdir = LR'),nl,write('"Start"'),write(' -> '),get_referencesArticle(C),nl, menu;
-	   D==2,write('Enter the keyword '),read(C)nl,write('digraph G {'),nl,write('rankdir = LR'),nl,write('"Start"'),write(' -> '),get_referencesinproceedings(C), nl, menu;   
-	   D==3,write('Enter the keyword '),read(C)nl,write('digraph G {'),nl,write('rankdir = LR'),nl,write('"Start"'),write(' -> '),get_referencesinproceedings(C), nl, menu; ).
+dot_graph(D):-(D==1,write('Enter the keyword '),read(C),nl,write('digraph G {'),nl,write('rankdir = LR'),nl,write('"Start"'),write(' -> '),get_referencesArticle(C);
+	   D==2,write('Enter the keyword '),read(C),nl,write('digraph G {'),nl,write('rankdir = LR'),nl,write('"Start"'),write(' -> '),get_referencesinproceedings(C);   
+	   D==3,write('Enter the keyword '),read(C),nl,write('digraph G {'),nl,write('rankdir = LR'),nl,write('"Start"'),write(' -> '),get_referencesinproceedings(C) ).
 
 
-get_referencesArticle(C):- findall(P-A,article(_,_,_,_,_,_,_,_, annote(C)), S), write_graph_obj(S).
-get_referencesinproceedings(C):- findall(P-A,inproceedings (_,_,_,_,_,_, annote(C) ), S), write_graph_obj(S).
-get_referencesinproceedings(C):- findall(P-A,book (_,_,_,_,_,annote(C))), S), write_graph_obj(S).
+get_referencesArticle(C):- findall(P-A,article(_,_,_,_,_,_,_,_,annote(C)), S), write_graph_obj(S).
+get_referencesinproceedings(C):- findall(P-A,inproceedings(_,_,_,_,_,_,annote(C) ), S), write_graph_obj(S).
+get_referencesinproceedings(C):- findall(P-A,book(_,_,_,_,_,annote(C) ), S) , write_graph_obj(S).
 
 write_graph_obj([]):- write('"end"').
 write_graph_obj([X|Y]):-
